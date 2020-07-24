@@ -1,0 +1,25 @@
+variables:
+  S3_BUCKET_NAME: "mm-stag-codepipeline-deployment"
+
+deploy:
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest # see the note below
+  script:
+    - aws s3  cp ./ s3://$S3_BUCKET_NAME --recursive --exclude ".gitlab-ci.yml" --exclude "my_app.sh"
+  only:
+    - mmstag
+
+
+    ===================================
+#100% tested by kaushik Patel with Gitlab and AWS CodeDeploy
+variables:
+  S3_BUCKET_NAME: "mm-stag-codepipeline-deployment"
+
+deploy:
+  stage: deploy
+  image: kenp8036/awscli2kp
+  script:
+    - zip test.zip -r . -x \*.git\* -x .gitlab-ci.yml -x my_app.sh
+    - aws s3 mv ./test.zip s3://$S3_BUCKET_NAME
+  only:
+    - mmstag
