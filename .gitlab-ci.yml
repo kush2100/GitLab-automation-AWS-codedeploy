@@ -9,4 +9,4 @@ deploy:
     - zip test.zip -r . -x \*.git\* -x .gitlab-ci.yml -x my_app.sh
     - aws s3 mv ./test.zip s3://$S3_BUCKET_NAME
   only:
-    - mmstag
+    - master
