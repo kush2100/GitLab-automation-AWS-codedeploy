@@ -1,0 +1,11 @@
+variables:
+  S3_BUCKET_NAME: "mm-stag-codepipeline-deployment"
+
+deploy:
+  stage: deploy
+  image: kenp8036/awscli2kp
+  script:
+    - zip mmstagdeployment.zip -r . -x \*.git\* -x .gitlab-ci.yml -x my_app.sh
+    - aws s3 mv ./mmstagdeployment.zip s3://$S3_BUCKET_NAME
+  only:
+    - mmstag
